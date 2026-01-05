@@ -9,7 +9,7 @@
 
 const char* server = "api.thingspeak.com"; // Your domain
 
-String ApiKey1 = "3AVOC.......";
+String ApiKey1 = "O4C1EPUZQ87AOSV4";
 String path1 = "/update?key=" + ApiKey1 + "&field1=";
 
 String ApiKey2 = " ";
@@ -26,8 +26,8 @@ DallasTemperature DS18B20_1(&oneWire1);
 DallasTemperature DS18B20_2(&oneWire2);
 DallasTemperature DS18B20_3(&oneWire3);
 
-const char* ssid = "TP-.....";
-const char* pass = ".....";
+const char* ssid = "HUAWEI-2.4G-7nGU";
+const char* pass = "qhWAgt7b";
 
 char temperatureString1[6];
 char temperatureString2[6];
@@ -48,7 +48,7 @@ void setup(void) {
   }
 
   Serial.println("");
-  Serial.print("Connected to ");
+  Serial.print("Connected to "); 
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
@@ -106,6 +106,12 @@ void loop() {
     Serial.println(temperatureString2);
     Serial.print("\n\r");
 
+    float temperature3 = getTemperature3();
+    dtostrf(temperature3, 2, 2, temperatureString3);
+    Serial.print("Temp3=  ");
+    Serial.println(temperatureString3);
+    Serial.print("\n\r");
+
     WiFiClient client;
     const int httpPort = 80;
     if (!client.connect(server, httpPort)) {
@@ -113,7 +119,7 @@ void loop() {
       return;
     }
 
-    String postStr = "api_key="+ApiKey1+"&field1="+temperatureString1+"&field2="+temperatureString2;
+    String postStr = "api_key="+ApiKey1+"&field1="+temperatureString1+"&field2="+temperatureString2+"&field3="+temperatureString3;
     client.println("POST /update HTTP/1.1");
     client.println("Host: api.thingspeak.com");
     client.println("Connection: close");
@@ -129,7 +135,7 @@ void loop() {
     Serial.println(postStr);                         
    }
 
-   if (counter == 10000000) {
+   if (counter == 25000000) {
     Serial.print("Counter: ");
     Serial.println(counter);
     counter = 0;
